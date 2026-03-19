@@ -1,32 +1,19 @@
-interface Task {
+import { useHandleTodoUpdate } from "../hooks/useHooks";
+
+export interface Task {
   id: number;
   text: string;
   completed: boolean;
   completedAt: string | null;
 }
 
+interface TodoListProps{
+  tasks: Task[];
+  setTasks:(tasks: Task[]) =>void;
+}
 
-// Initial Demo task 
-const initialTasks: Task[] = [
-  { id: 1, text: "Exercise", completed: false, completedAt: null },
-  { id: 2, text: "Go to shopping", completed: true, completedAt: "10:30 AM" },
-  { id: 3, text: "Meet my friends", completed: false, completedAt: null },
-  {
-    id: 4,
-    text: "Responding to client request",
-    completed: false,
-    completedAt: null,
-  },
-  {
-    id: 5,
-    text: "Finish writing the report",
-    completed: false,
-    completedAt: null,
-  },
-];
-
-export default function TodoList() {
-  const tasks = initialTasks;
+export default function TodoList({ tasks, setTasks }: TodoListProps) {
+  const {inputValue, setInputValue,editId,handleEditBtnClick, handleUpdate, isEditing} = useHandleTodoUpdate();
 
   return (
     <div
@@ -44,19 +31,19 @@ export default function TodoList() {
         <div className="flex gap-3 mb-8">
           <input
             type="text"
-            value=""
-          
+            value={inputValue}
+            onChange={(e) =>setInputValue(e.target.value)}
             placeholder="Please Enter a New task"
             className="flex-1 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-500 outline-none text-sm border border-slate-600 focus:border-yellow-400 transition-colors"
             style={{ backgroundColor: "transparent" }}
           />
           <button
             type="button"
-         
-            className="bg-yellow-400/60 text-slate-900 font-bold px-6 py-3 rounded-lg uppercase tracking-widest text-sm cursor-not-allowed"
+            onClick={()=> handleUpdate(tasks,setTasks)}
+            className="bg-yellow-400/60 text-slate-900 font-bold px-6 py-3 rounded-lg uppercase tracking-widest text-sm cursor-pointer hover:bg-yellow-500"
            
           >
-            Add
+            {isEditing ? "Update" : "Add"}
           </button>
         </div>
 
@@ -157,17 +144,14 @@ export default function TodoList() {
               <div className="flex items-center gap-2 ml-3 flex-shrink-0">
                 <button
                   type="button"
-                  disabled
-                  className="bg-blue-500/60 text-white text-xs font-semibold px-4 py-1.5 rounded cursor-not-allowed"
-                  aria-disabled="true"
+                  className="bg-blue-500/60 text-white text-xs font-semibold px-4 py-1.5 rounded cursor-pointer hover:bg-blue-600"
+                  onClick={()=>handleEditBtnClick(task.id, task.text)}
                 >
                   Edit
                 </button>
                 <button
                   type="button"
-                  disabled
-                  className="bg-red-500/60 text-white text-xs font-semibold px-4 py-1.5 rounded cursor-not-allowed"
-             
+                  className="bg-red-500/60 text-white text-xs font-semibold px-4 py-1.5 rounded cursor-pointer hover:bg-red-600"
                 >
                   Delete
                 </button>
