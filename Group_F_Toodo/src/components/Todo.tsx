@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 interface Task {
   id: number;
   text: string;
@@ -26,7 +28,12 @@ const initialTasks: Task[] = [
 ];
 
 export default function TodoList() {
-  const tasks = initialTasks;
+  const [tasks, setTasks] = useState(initialTasks);
+  const [query, setQuery] = useState("");
+
+  const filteredTasks = tasks.filter(task =>
+    task.text.toLowerCase().includes(query.toLowerCase())
+  );
 
   return (
     <div
@@ -64,16 +71,16 @@ export default function TodoList() {
         <div className="flex gap-3 mb-6">
           <input
             type="text"
-            value=""
-         
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
             placeholder="Search tasks..."
             className="flex-1 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-500 outline-none text-sm border border-slate-600 focus:border-yellow-400 transition-colors"
             style={{ backgroundColor: "transparent" }}
           />
           <button
-            type="button"
-            disabled
-            className="bg-slate-700/70 text-slate-200 font-semibold px-6 py-3 rounded-lg uppercase tracking-widest text-xs cursor-not-allowed"
+            type="submit"
+          
+            className="bg-slate-700/70 text-slate-200 font-semibold px-6 py-3 rounded-lg uppercase tracking-widest text-xs"
             
           >
             Search
@@ -82,11 +89,12 @@ export default function TodoList() {
 
         {/* Task List */}
         <ul className="flex flex-col gap-2">
-          {tasks.map((task) => (
-            <li
-              key={task.id}
-              className="flex items-center justify-between rounded-lg px-4 py-3 border border-slate-700/50 hover:border-slate-600 transition-colors"
-              style={{ backgroundColor: "#0d3347" }}
+          {filteredTasks.length > 0 ? (
+            filteredTasks.map((task) => (
+              <li
+                key={task.id}
+                className="flex items-center justify-between rounded-lg px-4 py-3 border border-slate-700/50 hover:border-slate-600 transition-colors"
+                style={{ backgroundColor: "#0d3347" }}
             >
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 {/* Custom Checkbox */}
@@ -173,10 +181,15 @@ export default function TodoList() {
                 </button>
               </div>
             </li>
-          ))}
+          ))
+          ) : (
+            <li className="text-center text-slate-500 py-4">
+              No tasks found matching "{query}"
+            </li>
+          )}
 
         </ul>
       </div>
     </div>
   );
-}
+}    
