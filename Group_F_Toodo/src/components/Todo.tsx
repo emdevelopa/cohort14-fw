@@ -45,18 +45,38 @@ export default function TodoList() {
           <input
             type="text"
             value=""
-            readOnly
+          
             placeholder="Please Enter a New task"
             className="flex-1 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-500 outline-none text-sm border border-slate-600 focus:border-yellow-400 transition-colors"
             style={{ backgroundColor: "transparent" }}
           />
           <button
             type="button"
-            disabled
+         
             className="bg-yellow-400/60 text-slate-900 font-bold px-6 py-3 rounded-lg uppercase tracking-widest text-sm cursor-not-allowed"
-            aria-disabled="true"
+           
           >
             Add
+          </button>
+        </div>
+
+        {/* Search Row */}
+        <div className="flex gap-3 mb-6">
+          <input
+            type="text"
+            value=""
+         
+            placeholder="Search tasks..."
+            className="flex-1 rounded-lg px-4 py-3 text-slate-300 placeholder-slate-500 outline-none text-sm border border-slate-600 focus:border-yellow-400 transition-colors"
+            style={{ backgroundColor: "transparent" }}
+          />
+          <button
+            type="button"
+            disabled
+            className="bg-slate-700/70 text-slate-200 font-semibold px-6 py-3 rounded-lg uppercase tracking-widest text-xs cursor-not-allowed"
+            
+          >
+            Search
           </button>
         </div>
 
@@ -147,7 +167,7 @@ export default function TodoList() {
                   type="button"
                   disabled
                   className="bg-red-500/60 text-white text-xs font-semibold px-4 py-1.5 rounded cursor-not-allowed"
-                  aria-disabled="true"
+             
                 >
                   Delete
                 </button>
